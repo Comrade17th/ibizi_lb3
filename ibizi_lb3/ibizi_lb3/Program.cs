@@ -24,34 +24,40 @@ namespace ibizi_lb3
 
         static void ResizeBitArrays(BitArray ba1, BitArray ba2, out BitArray ba1_out, out BitArray ba2_out)
         {
-            int maxsize = Math.Max(ba1.Length, ba2.Length);
-            int minsize = Math.Min(ba1.Length, ba2.Length);
-            int j = 0;
-            if(ba1.Length > ba2.Length)
+            int max = Math.Max(ba1.Length, ba2.Length);
+            int dt = Math.Abs(ba1.Length - ba2.Length);
+            dt;
+            if (ba1.Length > ba2.Length)
             {
-                ba1_out = ba1;
-                bool[] ba2_temp = new bool[maxsize];
-                for(int i = 0; i < maxsize; i++)
+                int j = 0;
+                bool[] ba2_temp = new bool[max];
+                for(int i = 0; i < dt; i++)
                 {
-                    if (i < maxsize - minsize + 1)
-                        ba2_temp[i] = false;
+                    ba2_temp[i] = false;
+                }
+                for(int i = dt; i < max; i++)
+                {
                     ba2_temp[i] = ba2[j];
                     j++;
                 }
                 ba2_out = new BitArray(ba2_temp);
+                ba1_out = ba1;
             }
             else
             {
-                ba2_out = ba2;
-                bool[] ba1_temp = new bool[maxsize];
-                for (int i = 0; i < maxsize; i++)
+                int j = 0;
+                bool[] ba1_temp = new bool[max];
+                for (int i = 0; i < dt; i++)
                 {
-                    if (i < maxsize - minsize + 1)
-                        ba1_temp[i] = false;
-                    ba1_temp[i] = ba1[j];
+                    ba1_temp[i] = false;
+                }
+                for (int i = dt; i < max; i++)
+                {
+                    ba1_temp[i] = ba2[j];
                     j++;
                 }
                 ba1_out = new BitArray(ba1_temp);
+                ba2_out = ba2;
             }
 
         }
@@ -176,8 +182,18 @@ namespace ibizi_lb3
 
         static void Main(string[] args)
         {
-
-            encodeTest();
+            string a = "a";
+            string aa = "bc";
+            BitArray a_ba = new BitArray(stringToBitArray(a));
+            BitArray aa_ba = new BitArray(stringToBitArray(aa));
+            BitArray a_rs;
+            BitArray aa_rs;
+            Console.WriteLine(BitArrToStringBits(a_ba));
+            Console.WriteLine(BitArrToStringBits(aa_ba));
+            ResizeBitArrays(a_ba, aa_ba, out a_rs, out aa_rs);
+            Console.WriteLine(BitArrToStringBits(a_rs));
+            Console.WriteLine(BitArrToStringBits(aa_rs));
+            //encodeTest();
             Console.ReadKey();
         }
 
